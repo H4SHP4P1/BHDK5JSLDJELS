@@ -57,7 +57,7 @@
   }
 
   function loop(){
-    if(Math.random()<0.003){ // ~ occasional flash
+    if(Math.random()<0.003){
       lightningStrike();
     }
     requestAnimationFrame(loop);
