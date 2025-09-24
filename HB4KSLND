@@ -1,0 +1,41 @@
+(function(){
+  const c=document.createElement("canvas");
+  const ctx=c.getContext("2d");
+  document.body.appendChild(c);
+  c.style.position="fixed";
+  c.style.top=0;c.style.left=0;
+  c.style.width="100%";c.style.height="100%";
+  c.style.pointerEvents="none";c.style.zIndex=9999;
+  function resize(){c.width=innerWidth;c.height=innerHeight}
+  addEventListener("resize",resize);resize();
+
+  function bolt(x1,y1,x2,y2,branch){
+    ctx.strokeStyle="rgba(255,255,255,"+(0.2+Math.random()*0.8)+")";
+    ctx.lineWidth=2+Math.random()*2;
+    ctx.beginPath();ctx.moveTo(x1,y1);
+    let x=x1,y=y1,steps=20+Math.random()*20;
+    for(let i=0;i<steps;i++){
+      x+= (x2-x1)/steps + (Math.random()-0.5)*20;
+      y+= (y2-y1)/steps + (Math.random()-0.5)*20;
+      ctx.lineTo(x,y);
+      if(!branch && Math.random()<0.1) bolt(x,y,x+Math.random()*100-50,y+Math.random()*100-50,true);
+    }
+    ctx.lineTo(x2,y2);ctx.stroke();
+  }
+
+  function flash(){
+    ctx.clearRect(0,0,c.width,c.height);
+    bolt(Math.random()*c.width,0,Math.random()*c.width,c.height);
+    if(Math.random()<0.5) bolt(Math.random()*c.width,0,Math.random()*c.width,c.height);
+    document.body.style.backgroundColor="rgba(255,255,255,0.1)";
+    setTimeout(()=>{document.body.style.backgroundColor="";},100);
+  }
+
+  function loop(){
+    if(Math.random()<0.02) flash(); // ~random chance per frame
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  addEventListener("click",flash);
+})();
