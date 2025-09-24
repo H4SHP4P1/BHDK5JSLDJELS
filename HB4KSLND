@@ -1,5 +1,4 @@
 (function(){
-  // Create fullscreen canvas
   const c=document.createElement("canvas");
   const ctx=c.getContext("2d");
   document.body.appendChild(c);
@@ -10,11 +9,9 @@
   function resize(){c.width=innerWidth;c.height=innerHeight}
   addEventListener("resize",resize);resize();
 
-  // Thunder audio (public domain)
   const thunder=new Audio("https://actions.google.com/sounds/v1/weather/thunder_crack.ogg");
   thunder.volume=0.5;
 
-  // Draw a jagged lightning path
   function bolt(x1,y1,x2,y2,depth){
     ctx.beginPath();ctx.moveTo(x1,y1);
     let x=x1,y=y1,steps=25+Math.random()*20;
@@ -30,15 +27,12 @@
     ctx.stroke();
   }
 
-  // Composite lightning effect
   function lightningStrike(x,y){
     ctx.clearRect(0,0,c.width,c.height);
 
-    // background flash
     document.body.style.backgroundColor="rgba(255,255,255,0.25)";
     setTimeout(()=>{document.body.style.backgroundColor="";},80);
 
-    // multiple layers for glow
     const startX = x ?? Math.random()*c.width;
     const startY = y ?? 0;
     const endX   = Math.random()*c.width;
@@ -62,7 +56,6 @@
     try{ thunder.currentTime=0; thunder.play(); }catch(e){}
   }
 
-  // Random strikes
   function loop(){
     if(Math.random()<0.003){ // ~ occasional flash
       lightningStrike();
@@ -71,7 +64,6 @@
   }
   loop();
 
-  // User click = lightning at click
   addEventListener("click",e=>{
     lightningStrike(e.clientX,e.clientY);
   });
